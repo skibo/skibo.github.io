@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Commodore PET</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style type='text/css'>
+     .hints1 {
+        margin-left: 20%;
+        margin-right: 20%;
+        padding: 2%;
+        background: #eeeeff;
+     }
+     .petvid {
+	margin: 2%;
+        padding: 1%;
+        background: #222266;
+        width: 640px;
+        height: 400px;
+     }
+</style>
+<script type="text/javascript" src="../js/cpu6502.js"></script>
+<script type="text/javascript" src="js/petkeys.js"></script>
+<script type="text/javascript" src="js/pet2001roms.js"></script>
+<script type="text/javascript" src="js/pet2001hw.js"></script>
+<script type="text/javascript" src="js/pet2001ieee.js"></script>
+<script type="text/javascript" src="js/pet2001io.js"></script>
+<script type="text/javascript" src="js/pet2001video.js"></script>
+<script type="text/javascript" src="js/pet2001.js"></script>
+</head>
+<body>
+<center>
+<h1>Commodore PET</h1>BETA
+<input type='button' value='Hints' onClick='javascript:onHints()'><p>
+</center>
+<div class="hints1" id='hints' hidden>
+The keyboard graphic responds to mouse clicks, touch events, and key presses.
+Hold your shift key while clicking the PET keyboard to get the graphics
+characters.
+(The emulator simulates pressing the PET's left shift-key at the
+same time as the clicked key.)<p>
+Changing the size of memory or changing the ROM version forces a reset
+of the PET.<p>
+The emulator has an IEEE-488 device at address 8.  It can be
+used load and save (.prg) files.<p>
+To load program files that are on your local disk, first select
+the file with the browse button.  Then type LOAD "NAME",8 into the PET.
+To save a program, type SAVE "NAME",8
+and then you'll be prompted to save the file.  Note that IEEE-488 doesn't
+work with ROM version 1.<p>
+There is a large collection of .prg programs
+<a href="http://www.zimmers.net/anonftp/pub/cbm/pet/ALLFILES.html"
+   target="_blank">here</a>.  Take a look under demos/Cursor/ and games/.
+Some programs don't run on ROM1 and some require
+more memory than the default 8K.<p>
+April, 2014<p>
+<input type='button' value='Hide' onClick='javascript:onHints()'>
+</div>
+<script type="text/javascript">
+function onHints() {
+   var e = document.getElementById('hints');
+   e.hidden = !e.hidden;
+}
+</script>
+<center>
+<canvas class='petvid' id='petscreen' width='640' height='400'></canvas>
+<p>
+<div>
+   <input type='button' onClick='javascript:resetButton()' id='resetbutton'
+       value='Reset'>
+   <input type='button' onClick='javascript:pauseButton()' id='pausebutton'
+       value='Pause '>
+   <select onChange='javascript:romSelection()' id='romselection'>
+      <option value=1>ROM1</option>
+      <option value=2 selected>ROM2</option>
+   </select>
+   <select onChange='javascript:ramsizeSelection()' id='ramselection'>
+      <option value=8>8K</option>
+      <option value=16>16K</option>
+      <option value=32>32K</option>
+   </select>
+   Load Program:
+   <input type='file' id='loadfile' onchange='javascript:loadFile()'>
+</div>
+<p>
+<img src="keyboard_800x267.png" id='petkey'
+ onMouseDown="javascript:petkeyOnMouseDown(this, event)"
+ onMouseUp="javascript:petkeyOnMouseUp(this, event)">
+<p>
+PET keyboard image authored by
+<a href="http://commons.wikimedia.org/wiki/User:Lovelac7">Lovelac7</a>
+and found on Wikipedia
+<a href="http://en.wikipedia.org/wiki/File:PET_Keyboard.svg">here</a>.<p>
+<p>
+Norbert Landsteiner has made many additions and enhancements to this PET
+emulator.  His emulator can be found
+<a href="http://www.masswerk.at/pet/">here</a>.
+</center>
+<p>
+<a href="mailto:info7533@skibo.net">E-mail Me</a><br>
+<script type="text/javascript" src="js/pet2001main.js"></script>
+</body>
+</html>
