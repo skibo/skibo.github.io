@@ -606,13 +606,11 @@ function PetIO(_hw, vid) {
     //}
 
     this.cycle = function () {
-        // Synthesisze a SYNC signal at 60hz.  I just took a guess at the
-        // duty cycle.
-        //
-        if (++video_cycle == 5000)
-            this.sync(0);
-        else if (video_cycle == 16667) {
+        // Synthesisze a SYNC signal at 60.1hz and 76.9% duty cycle.
+        if (++video_cycle == 3840)
             this.sync(1);
+        else if (video_cycle == 16640) {
+            this.sync(0);
             video_cycle = 0;
         }
 
