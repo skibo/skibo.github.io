@@ -183,6 +183,8 @@ function PetIO(_hw, vid) {
         // Update pia1_pb.
         if ((pia1_pa_out & 15) < 10)
             pia1_pb_in = keyrow[pia1_pa_out & 15];
+        else
+            pia1_pb_in = 0xff;
     }
 
     this.sync = function(sig) {
@@ -392,6 +394,8 @@ function PetIO(_hw, vid) {
                 // Which keyrow are we accessing?
                 if ((pia1_pa_out & 15) < 10)
                     pia1_pb_in = keyrow[pia1_pa_out & 15];
+                else
+                    pia1_pb_in = 0xff;
             }
             else
                 pia1_ddra = d8;
