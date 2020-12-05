@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2012,2014 Thomas Skibo.
+// Copyright (c) 2012,2014,2020 Thomas Skibo. <thomas@skibo.net>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -618,20 +618,17 @@ function PetIO(_hw, vid) {
         if (via_t1cl-- == 0) {
             if (via_t1ch-- == 0) {
 
-                /* T1 underflow. */
-                if ((via_acr & 0x40) != 0) {
-                    /* Continuous operation. Reload. */
-                    via_t1cl = via_t1ll;
-                    via_t1ch = via_t1lh;
-                    via_t1_1shot = 1;
-                }
+                /* T1 underflow.  Reload. */
+                via_t1cl = via_t1ll;
+                via_t1ch = via_t1lh;
 
                 /* Interrupt? */
                 if (via_t1_1shot) {
                     via_ifr |= 0x40;
                     if ((via_ier & 0x40) != 0)
                         this.updateIrq();
-                    via_t1_1shot = 0;
+                    if ((via_acr & 0x40) == 0)
+                        via_t1_1shot = 0;
                 }
             }
         }
