@@ -110,30 +110,4 @@ function Pet2001Video(context) {
         charset = flag ? petCharRom2 : petCharRom1;
         redrawScreen(this.vidram);
     }
-
-    // Convert state of video into a string for saving (unused).
-    this.save = function() {
-        var s = (blank ? '1' : '0') + ',' +
-            (this.charset == petCharRom1 ? '1' : '2') + ',';
-
-        for (var i = 0; i < VIDRAM_SIZE; i++)
-            s += this.vidram[i].toString(16) + ',';
-
-        return s;
-    }
-
-    // Restore state of video from string (unused).
-    this.load = function(s) {
-        var l = s.split(',');
-        blank = (l[0] == '1');
-        charset = (l[1] == '2' ? petCharRom2 : petCharRom1);
-
-        for (var i = 0; i < VIDRAM_SIZE; i++)
-            this.vidram[i] = parseInt(l[i + 2], 16);
-
-        if (blank)
-            blankScreen();
-        else
-            redrawScreen(this.vidram);
-    }
 }

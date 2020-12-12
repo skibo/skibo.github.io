@@ -70,26 +70,6 @@ function Pet2001(context) {
         hw.ieeeLoadData(addr, bytes);
     }
 
-    // This method creates a string which serves as a snapshot of all
-    // the PET state (CPU, memory, I/O, video).  Although not used (yet),
-    // at some point it would be fun to save sessions away on a server
-    // or locally (but it's too big for a cookie).
-    //
-    this.save = function() {
-        return romVers.toString() + "|" + cpu.save() + '|' +
-            hw.save() + '|' + video.save();
-    }
-
-    // Restore the PET to a snapshot created by the save() method.
-    this.load = function(s) {
-        var l = s.split('|');
-
-        cpu.load(l[1]);
-        hw.load(l[2]);
-        video.load(l[3]);
-        this.setRomVers(parseInt(l[0]));
-    }
-
     this.blankTimeoutFunc = function() {
         video.blankTimeoutFunc();
     }

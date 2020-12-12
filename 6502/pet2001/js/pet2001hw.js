@@ -130,35 +130,4 @@ function Pet2001hw(vid) {
         else if (addr >= IO_ADDR && addr < IO_ADDR + IO_SIZE)
             io.write(addr - IO_ADDR, d8);
     }
-
-    this.save = function() {
-        var s = ramsize.toString(16) + ';';
-
-        for (var i = 0; i < ramsize; i++)
-            s += ram[i].toString(16) + ',';
-
-        s += ';' + this.irq_signal.toString();
-        s += ';' + this.nmi_signal.toString();
-
-        s +=  ';' + io.save();
-        
-        return s;
-    }
-
-    this.load = function(s) {
-        var obs = s.split(';');
-        ramsize = parseInt(obs[0], 16);
-        var ramstr = obs[1];
-
-        for (var i = 0; i < ramsize; i++) {
-            ram[i] = parseInt(ramstr, 16);
-            if (i < ramsize - 1)
-                ramstr = ramstr.slice(ramstr.indexOf(',')+1);
-        }
-
-        this.irq_signal = parseInt(obs[2]);
-        this.nmi_signal = parseInt(obs[3]);
-
-        io.load(obs[4]);
-    }
 }
