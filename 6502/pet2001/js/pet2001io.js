@@ -96,16 +96,23 @@ function PetIO(_hw, vid) {
     var via_t1cl =      0xff;
     var via_t1ch =      0xff;
     var via_t1_1shot =  0;
+    var via_t1_undf =   0;
     var via_t1ll =      0xff;
     var via_t1lh =      0xff;
     var via_t2cl =      0xff;
     var via_t2ch =      0xff;
     var via_t2_1shot =  0;
+    var via_t2_undf =   0;
     var via_sr =        0;
+    var via_sr_cntr =   0;
+    var via_sr_start =  0;
     var via_acr =       0;
     var via_pcr =       0;
     var via_ifr =       0;
     var via_ier =       0x80;
+
+    var via_cb1 =       1;
+    var via_cb2 =       1;
 
     var video_cycle =   0;
 
@@ -143,16 +150,23 @@ function PetIO(_hw, vid) {
         via_t1cl =      0xff;
         via_t1ch =      0xff;
         via_t1_1shot =  0;
+        var_t1_undf =   0;
         via_t1ll =      0xff;
         via_t1lh =      0xff;
         via_t2cl =      0xff;
         via_t2ch =      0xff;
         via_t2_1shot =  0;
+        via_t2_undf =   0;
         via_sr =        0;
+        via_sr_cntr =   0;
+        via_sr_start =  0;
         via_acr =       0;
         via_pcr =       0;
         via_ifr =       0;
         via_ier =       0x80;
+
+        via_cb1 =       1;
+        via_cb2 =       1;
 
         video_cycle =   0;
 
@@ -368,6 +382,9 @@ function PetIO(_hw, vid) {
                 if ((via_ier & 0x04) != 0)
                     this.updateIrq();
             }
+            /* Start SR counter. */
+            if ((via_acr & 0x1c) != 0 && via_sr_cntr == 0)
+                via_sr_start = 1;
             return via_sr;
         case VIA_ACR:
             return via_acr;
@@ -514,10 +531,10 @@ function PetIO(_hw, vid) {
                 if ((via_ier & 0x40) != 0)
                     this.updateIrq();
             }
+            /* Write to T1LH and set via_t1_undf to set T1 next cycle. */
             via_t1lh = d8;
-            via_t1ch = d8;
+            via_t1_undf = 1;
             via_t1_1shot = 1;
-            via_t1cl = via_t1ll;
             break;
         case VIA_T1LL:
             via_t1ll = d8;
@@ -545,6 +562,15 @@ function PetIO(_hw, vid) {
                 via_t2_1shot = 1;
             via_t2cl = via_t2ll;
             via_t2ch = d8;
+            /*
+             * Increment counter to take into account cycle() will
+             * decrement it in the same cycle.
+             */
+            if ((via_acr & 0x20) == 0 && ++via_t2cl == 0x100) {
+                via_t2cl = 0;
+                if (++via_t2ch == 0x100)
+                    via_t2ch = 0;
+            }
             break;
         case VIA_SR:
             /* Clear SR int flag IFR2 */
@@ -553,9 +579,16 @@ function PetIO(_hw, vid) {
                 if ((via_ier & 0x04) != 0)
                     this.updateIrq();
             }
+            /* Start the SR counter. */
+            if ((via_acr & 0x1c) != 0)
+                via_sr_start = 1;
             via_sr = d8;
             break;
         case VIA_ACR:
+            if ((d8 & 0x1c) == 0) {
+                via_sr_cntr = 0;
+                via_cb1 = 1;
+            }
             via_acr = d8;
             break;
         case VIA_PCR:
@@ -564,7 +597,6 @@ function PetIO(_hw, vid) {
                 ((via_pcr ^ d8) & 0x02) != 0) {
                 video.setCharset((d8 & 0x02) != 0);
             }
-            /* TODO: we'd do CB2 audio here too. */
             via_pcr = d8;
             break;
         case VIA_IFR:
@@ -619,12 +651,15 @@ function PetIO(_hw, vid) {
         }
 
         /* Handle VIA.TIMER1 */
-        if (via_t1cl-- == 0) {
+        if (via_t1_undf) {
+            /* T1 underflow.  Reload. */
+            via_t1cl = via_t1ll;
+            via_t1ch = via_t1lh;
+            via_t1_undf = 0;
+        } else if (via_t1cl-- == 0) {
             if (via_t1ch-- == 0) {
 
-                /* T1 underflow.  Reload. */
-                via_t1cl = via_t1ll;
-                via_t1ch = via_t1lh;
+                via_t1_undf = 1;
 
                 /* Interrupt? */
                 if (via_t1_1shot) {
@@ -640,9 +675,38 @@ function PetIO(_hw, vid) {
         via_t1ch &= 0xff;
 
         /* Handle VIA.TIMER2 */
-        if ((via_acr & 0x20) == 0 && via_t2cl-- == 0) {
-            if (via_t2ch-- == 0) {
+        if (via_t2_undf) {
+            via_t2cl = via_t2ll;
+            if ((via_acr & 0x1c) == 0x10 && via_sr_cntr > 0) {
+                /* Free-running shift register. */
+                via_cb1 = !via_cb1;
+                if (via_cb1) {
+                    via_sr = ((via_sr >> 7) | (via_sr << 1)) & 0xff;
+                    via_cb2 = via_sr & 1;
+                }
+            } else if ((via_acr & 0xc) == 4 && via_sr_cntr > 0) {
+                /* Other SR modes clocked by T2. */
+                via_cb1 = !via_cb1;
+                if (via_cb1) {
+                    if ((via_acr & 0x10) != 0)
+                        via_sr = ((via_sr >> 7) | (via_sr << 1)) & 0xff;
+                    else
+                        via_sr = ((via_sr << 1) | 1) & 0xff;
+                    via_cb2 = via_sr & 1;
+                    if (--via_sr_cntr == 0) {
+                        via_ifr |= 0x04;
+                        if ((via_ier & 0x04) != 0)
+                            this.updateIrq();
+                    }
+                }
+            }
+            via_t2_undf = 0;
+        } else if ((via_acr & 0x20) == 0 && via_t2cl-- == 0) {
+            /* Reload T2L on next cycle? */
+            if ((via_acr & 0x14) != 0)
+                via_t2_undf = 1;
 
+            if (via_t2ch-- == 0) {
                 /* T2 underflow. */
                 if (via_t2_1shot) {
                     via_ifr |= 0x20;
@@ -654,6 +718,28 @@ function PetIO(_hw, vid) {
         }
         via_t2cl &= 0xff;
         via_t2ch &= 0xff;
+
+        /* Handle VIA.SR when in system clock mode. */
+        if (via_sr_cntr > 0 && (via_acr & 0xc) == 8) {
+            via_cb1 = !via_cb1;
+            if (via_cb1) {
+                if ((via_acr & 0x10) != 0)
+                    via_sr = ((via_sr >> 7) | (via_sr << 1)) & 0xff;
+                else
+                    via_sr = ((via_sr << 1) | 1) & 0xff;
+                via_cb2 = via_sr & 1;
+                if (--via_sr_cntr == 0) {
+                    via_ifr |= 0x04;
+                    if ((via_ier & 0x04) != 0)
+                        this.updateIrq();
+                }
+            }
+        }
+        if (via_sr_start) {
+            via_sr_start = 0;
+            via_sr_cntr = (via_acr & 0x10) == 0 ? 8 : 9;
+        }
+
     } // cycle()
 
     this.ieeeLoadData = function(addr, bytes) {
