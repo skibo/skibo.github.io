@@ -187,7 +187,7 @@ var petkeyKeyQueue = [];
 
 function petkeyKeypressTimeout() {
     petkeyReleaseAll();
-  
+
     // Are there queued keypresses?  Press and set another timeout.
     if (petkeyKeyQueue.length > 0) {
         var code = petkeyKeyQueue.shift();
@@ -210,6 +210,7 @@ function petkeyOnKeyPress(event) {
         return true;
 
     var code = event.charCode != 0 ? event.charCode : event.keyCode;
+    // console.log("petkeyOnKeyPress(): code=%d", code);
 
     if (code > 0 && code < 128 && ascii_to_pet_row[code] >= 0) {
         // Is another key already being held?
@@ -234,5 +235,6 @@ function petkeyOnKeyPress(event) {
         }
     }
 
+    event.returnValue = false;
     return false;
 }
