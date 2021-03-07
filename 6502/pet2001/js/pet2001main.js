@@ -33,6 +33,7 @@ var pet2001 = new Pet2001(petContext);
 var petIntervalTime = 50;
 var extraCycles = 0;
 
+window.onkeydown = petkeyOnKeyDown;
 window.onkeypress = petkeyOnKeyPress;
 
 function petIntervalFunc() {
