@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+   <title>Sudoku Puzzle Generator/Solver</title>
+   <!-- by Thomas Skibo --->
+<style type="text/css">
+.sudo1 {
+     background: #ddaabb;
+     border: thin solid black;
+}
+.sudo2 {
+     empty-cells: show;
+     border: none;
+}
+.sudo3 {
+     background: #ddeecc;
+     width: 40px;
+     height: 40px;
+     font: 35px bold;
+     text-align: center;
+     border: thin solid black;
+}
+</style>
+<script type="text/javascript" src="geturlvars.js"></script>
+<script type="text/javascript" src="sudoku_common.js"></script>
+<script type="text/javascript" src="sudoku0.js"></script>
+</head>
+<body>
+<center>
+<table class="sudo1">
+<!-- this was originaly generated in php but github.io doesn't allow php --->
+<tr><td><table class="sudo2">
+<tr><td><input type="text" id="1_1" class="sudo3" onchange="javascript:modifyCell(1,1)"></td>
+<td><input type="text" id="2_1" class="sudo3" onchange="javascript:modifyCell(2,1)"></td>
+<td><input type="text" id="3_1" class="sudo3" onchange="javascript:modifyCell(3,1)"></td>
+</tr>
+<tr><td><input type="text" id="1_2" class="sudo3" onchange="javascript:modifyCell(1,2)"></td>
+<td><input type="text" id="2_2" class="sudo3" onchange="javascript:modifyCell(2,2)"></td>
+<td><input type="text" id="3_2" class="sudo3" onchange="javascript:modifyCell(3,2)"></td>
+</tr>
+<tr><td><input type="text" id="1_3" class="sudo3" onchange="javascript:modifyCell(1,3)"></td>
+<td><input type="text" id="2_3" class="sudo3" onchange="javascript:modifyCell(2,3)"></td>
+<td><input type="text" id="3_3" class="sudo3" onchange="javascript:modifyCell(3,3)"></td>
+</tr>
+</table></td>
+<td><table class="sudo2">
+<tr><td><input type="text" id="4_1" class="sudo3" onchange="javascript:modifyCell(4,1)"></td>
+<td><input type="text" id="5_1" class="sudo3" onchange="javascript:modifyCell(5,1)"></td>
+<td><input type="text" id="6_1" class="sudo3" onchange="javascript:modifyCell(6,1)"></td>
+</tr>
+<tr><td><input type="text" id="4_2" class="sudo3" onchange="javascript:modifyCell(4,2)"></td>
+<td><input type="text" id="5_2" class="sudo3" onchange="javascript:modifyCell(5,2)"></td>
+<td><input type="text" id="6_2" class="sudo3" onchange="javascript:modifyCell(6,2)"></td>
+</tr>
+<tr><td><input type="text" id="4_3" class="sudo3" onchange="javascript:modifyCell(4,3)"></td>
+<td><input type="text" id="5_3" class="sudo3" onchange="javascript:modifyCell(5,3)"></td>
+<td><input type="text" id="6_3" class="sudo3" onchange="javascript:modifyCell(6,3)"></td>
+</tr>
+</table></td>
+<td><table class="sudo2">
+<tr><td><input type="text" id="7_1" class="sudo3" onchange="javascript:modifyCell(7,1)"></td>
+<td><input type="text" id="8_1" class="sudo3" onchange="javascript:modifyCell(8,1)"></td>
+<td><input type="text" id="9_1" class="sudo3" onchange="javascript:modifyCell(9,1)"></td>
+</tr>
+<tr><td><input type="text" id="7_2" class="sudo3" onchange="javascript:modifyCell(7,2)"></td>
+<td><input type="text" id="8_2" class="sudo3" onchange="javascript:modifyCell(8,2)"></td>
+<td><input type="text" id="9_2" class="sudo3" onchange="javascript:modifyCell(9,2)"></td>
+</tr>
+<tr><td><input type="text" id="7_3" class="sudo3" onchange="javascript:modifyCell(7,3)"></td>
+<td><input type="text" id="8_3" class="sudo3" onchange="javascript:modifyCell(8,3)"></td>
+<td><input type="text" id="9_3" class="sudo3" onchange="javascript:modifyCell(9,3)"></td>
+</tr>
+</table></td>
+</tr>
+<tr><td><table class="sudo2">
+<tr><td><input type="text" id="1_4" class="sudo3" onchange="javascript:modifyCell(1,4)"></td>
+<td><input type="text" id="2_4" class="sudo3" onchange="javascript:modifyCell(2,4)"></td>
+<td><input type="text" id="3_4" class="sudo3" onchange="javascript:modifyCell(3,4)"></td>
+</tr>
+<tr><td><input type="text" id="1_5" class="sudo3" onchange="javascript:modifyCell(1,5)"></td>
+<td><input type="text" id="2_5" class="sudo3" onchange="javascript:modifyCell(2,5)"></td>
+<td><input type="text" id="3_5" class="sudo3" onchange="javascript:modifyCell(3,5)"></td>
+</tr>
+<tr><td><input type="text" id="1_6" class="sudo3" onchange="javascript:modifyCell(1,6)"></td>
+<td><input type="text" id="2_6" class="sudo3" onchange="javascript:modifyCell(2,6)"></td>
+<td><input type="text" id="3_6" class="sudo3" onchange="javascript:modifyCell(3,6)"></td>
+</tr>
+</table></td>
+<td><table class="sudo2">
+<tr><td><input type="text" id="4_4" class="sudo3" onchange="javascript:modifyCell(4,4)"></td>
+<td><input type="text" id="5_4" class="sudo3" onchange="javascript:modifyCell(5,4)"></td>
+<td><input type="text" id="6_4" class="sudo3" onchange="javascript:modifyCell(6,4)"></td>
+</tr>
+<tr><td><input type="text" id="4_5" class="sudo3" onchange="javascript:modifyCell(4,5)"></td>
+<td><input type="text" id="5_5" class="sudo3" onchange="javascript:modifyCell(5,5)"></td>
+<td><input type="text" id="6_5" class="sudo3" onchange="javascript:modifyCell(6,5)"></td>
+</tr>
+<tr><td><input type="text" id="4_6" class="sudo3" onchange="javascript:modifyCell(4,6)"></td>
+<td><input type="text" id="5_6" class="sudo3" onchange="javascript:modifyCell(5,6)"></td>
+<td><input type="text" id="6_6" class="sudo3" onchange="javascript:modifyCell(6,6)"></td>
+</tr>
+</table></td>
+<td><table class="sudo2">
+<tr><td><input type="text" id="7_4" class="sudo3" onchange="javascript:modifyCell(7,4)"></td>
+<td><input type="text" id="8_4" class="sudo3" onchange="javascript:modifyCell(8,4)"></td>
+<td><input type="text" id="9_4" class="sudo3" onchange="javascript:modifyCell(9,4)"></td>
+</tr>
+<tr><td><input type="text" id="7_5" class="sudo3" onchange="javascript:modifyCell(7,5)"></td>
+<td><input type="text" id="8_5" class="sudo3" onchange="javascript:modifyCell(8,5)"></td>
+<td><input type="text" id="9_5" class="sudo3" onchange="javascript:modifyCell(9,5)"></td>
+</tr>
+<tr><td><input type="text" id="7_6" class="sudo3" onchange="javascript:modifyCell(7,6)"></td>
+<td><input type="text" id="8_6" class="sudo3" onchange="javascript:modifyCell(8,6)"></td>
+<td><input type="text" id="9_6" class="sudo3" onchange="javascript:modifyCell(9,6)"></td>
+</tr>
+</table></td>
+</tr>
+<tr><td><table class="sudo2">
+<tr><td><input type="text" id="1_7" class="sudo3" onchange="javascript:modifyCell(1,7)"></td>
+<td><input type="text" id="2_7" class="sudo3" onchange="javascript:modifyCell(2,7)"></td>
+<td><input type="text" id="3_7" class="sudo3" onchange="javascript:modifyCell(3,7)"></td>
+</tr>
+<tr><td><input type="text" id="1_8" class="sudo3" onchange="javascript:modifyCell(1,8)"></td>
+<td><input type="text" id="2_8" class="sudo3" onchange="javascript:modifyCell(2,8)"></td>
+<td><input type="text" id="3_8" class="sudo3" onchange="javascript:modifyCell(3,8)"></td>
+</tr>
+<tr><td><input type="text" id="1_9" class="sudo3" onchange="javascript:modifyCell(1,9)"></td>
+<td><input type="text" id="2_9" class="sudo3" onchange="javascript:modifyCell(2,9)"></td>
+<td><input type="text" id="3_9" class="sudo3" onchange="javascript:modifyCell(3,9)"></td>
+</tr>
+</table></td>
+<td><table class="sudo2">
+<tr><td><input type="text" id="4_7" class="sudo3" onchange="javascript:modifyCell(4,7)"></td>
+<td><input type="text" id="5_7" class="sudo3" onchange="javascript:modifyCell(5,7)"></td>
+<td><input type="text" id="6_7" class="sudo3" onchange="javascript:modifyCell(6,7)"></td>
+</tr>
+<tr><td><input type="text" id="4_8" class="sudo3" onchange="javascript:modifyCell(4,8)"></td>
+<td><input type="text" id="5_8" class="sudo3" onchange="javascript:modifyCell(5,8)"></td>
+<td><input type="text" id="6_8" class="sudo3" onchange="javascript:modifyCell(6,8)"></td>
+</tr>
+<tr><td><input type="text" id="4_9" class="sudo3" onchange="javascript:modifyCell(4,9)"></td>
+<td><input type="text" id="5_9" class="sudo3" onchange="javascript:modifyCell(5,9)"></td>
+<td><input type="text" id="6_9" class="sudo3" onchange="javascript:modifyCell(6,9)"></td>
+</tr>
+</table></td>
+<td><table class="sudo2">
+<tr><td><input type="text" id="7_7" class="sudo3" onchange="javascript:modifyCell(7,7)"></td>
+<td><input type="text" id="8_7" class="sudo3" onchange="javascript:modifyCell(8,7)"></td>
+<td><input type="text" id="9_7" class="sudo3" onchange="javascript:modifyCell(9,7)"></td>
+</tr>
+<tr><td><input type="text" id="7_8" class="sudo3" onchange="javascript:modifyCell(7,8)"></td>
+<td><input type="text" id="8_8" class="sudo3" onchange="javascript:modifyCell(8,8)"></td>
+<td><input type="text" id="9_8" class="sudo3" onchange="javascript:modifyCell(9,8)"></td>
+</tr>
+<tr><td><input type="text" id="7_9" class="sudo3" onchange="javascript:modifyCell(7,9)"></td>
+<td><input type="text" id="8_9" class="sudo3" onchange="javascript:modifyCell(8,9)"></td>
+<td><input type="text" id="9_9" class="sudo3" onchange="javascript:modifyCell(9,9)"></td>
+</tr>
+</table></td>
+</tr>
+</table><br>
+<input type="button" onClick="javascript:solveButton()" value="Solve">
+<input type="button" onClick="javascript:clearButton()" value="Clear">
+<input type="button" onClick="javascript:clearSolButton()" value="Clear Solution"><br>
+<input type="button" onClick="javascript:createButton()" value="Create">
+<select id="difficulty_select" name="difficulty">
+<option value="32">Easy</option>
+<option value="28">Medium</option>
+<option value="0">Hard</option>
+</select>
+<input type="button" onClick="javascript:create4Button()" value="Create Four">
+<br>
+<input type="checkbox" id="symmetrical">Create Symmetrical<br>
+<input type="checkbox" id="useLetters" onChange="javascript:onUseLetters()">Use Letters<br>
+</center>
+<br>
+<div style="margin-left: 5%; margin-right: 5%; background: #ddddff; padding: 40px;">
+  This page can be used to solve or generate sudoku puzzles.
+  It uses Javascript to do the computation.  Press the "Create" button to
+  create a random puzzle.  Press the "Create Four" button to get four puzzles
+  on a printer-friendly page.
+  <p>
+  Enter numbers into the squares and press "Solve" to solve puzzles.  If
+  there are multiple solutions to the puzzle, a random solution is chosen.
+  You will also be told if no solution is possible.
+  <p>
+  <a href="mailto:info7533@skibo.net">E-mail me</a> your comments,
+  suggestions, or bugs.<p>
+<br>
+</div>
+<script type="text/javascript">
+onDocumentLoad();
+</script>
+</body>
+</html>
