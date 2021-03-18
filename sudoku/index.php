@@ -68,15 +68,17 @@ for ($y1=0; $y1<3; $y1++) {
 </center>
 <br>
 <div style="margin-left: 5%; margin-right: 5%; background: #ddddff; padding: 40px;">
-This page generates random sudoku puzzles.  It uses Javascript to do
-the computation.  Press the "Create Four" button to get four puzzles on a printer-friendly
-page.
-<p>
-You can also enter numbers into the puzzle and have it search for a solution.  If there
-are mutliple solutions, you will get a random solution.
-<p>
-<a href="mailto:info7533@skibo.net">E-mail me</a> your comments,
-suggestions, or bugs.<p>
+  This page can be used to solve or generate sudoku puzzles.
+  It uses Javascript to do the computation.  Press the "Create" button to
+  create a random puzzle.  Press the "Create Four" button to get four puzzles
+  on a printer-friendly page.
+  <p>
+  Enter numbers into the squares and press "Solve" to solve puzzles.  If
+  there are multiple solutions to the puzzle, a random solution is chosen.
+  You will also be told if no solution is possible.
+  <p>
+  <a href="mailto:info7533@skibo.net">E-mail me</a> your comments,
+  suggestions, or bugs.<p>
 <br>
 </div>
 <script type="text/javascript">
