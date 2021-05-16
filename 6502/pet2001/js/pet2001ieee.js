@@ -29,12 +29,12 @@ function PetIEEE(_hw) {
     var hw = _hw;
 
     // State machine
-    var STATE_IDLE = 0,
-        STATE_LISTEN = 1,
-        STATE_FNAME = 2,
-        STATE_LOAD = 3,
-        STATE_SAVE = 4,
-        STATE_SAVE1 = 5;
+    const STATE_IDLE = 0,
+          STATE_LISTEN = 1,
+          STATE_FNAME = 2,
+          STATE_LOAD = 3,
+          STATE_SAVE = 4,
+          STATE_SAVE1 = 5;
     var state = STATE_IDLE;
 
     // signals

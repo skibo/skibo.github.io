@@ -26,13 +26,13 @@
 
 // pet2001hw.js
 
-var     VIDRAM_ADDR =   0x8000,
-        VIDRAM_SIZE =   0x0400,
-        IO_ADDR =       0xe800,
-        IO_SIZE =       0x0800,
-        ROM_ADDR =      0xC000,
-        ROM_SIZE =      0x3800,
-        MAX_RAM_SIZE =  0x8000;
+const VIDRAM_ADDR =   0x8000,
+      VIDRAM_SIZE =   0x0400,
+      IO_ADDR =       0xe800,
+      IO_SIZE =       0x0800,
+      ROM_ADDR =      0xC000,
+      ROM_SIZE =      0x3800,
+      MAX_RAM_SIZE =  0x8000;
 
 
 // Memory and signal interface for cpu6502.  If I wanted to bother,

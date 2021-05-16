@@ -31,20 +31,20 @@
 
 function Cpu6502(hwobj) {
     // 6502 constants.
-    var STACK_ADDR =    0x0100,
-        NMI_VECTOR =    0xfffa,
-        RESET_VECTOR =  0xfffc,
-        IRQ_VECTOR =    0xfffe;
+    const STACK_ADDR =    0x0100,
+          NMI_VECTOR =    0xfffa,
+          RESET_VECTOR =  0xfffc,
+          IRQ_VECTOR =    0xfffe;
 
     /* Processor status flags. */
-    var P_N =   0x80,
-        P_V =   0x40,
-        P_1 =   0x20,   // always set
-        P_B =   0x10,
-        P_D =   0x08,
-        P_I =   0x04,
-        P_Z =   0x02,
-        P_C =   0x01;
+    const P_N =   0x80,
+          P_V =   0x40,
+          P_1 =   0x20,   // always set
+          P_B =   0x10,
+          P_D =   0x08,
+          P_I =   0x04,
+          P_Z =   0x02,
+          P_C =   0x01;
 
     var hw = hwobj;
     var cycle_delay = 0;
@@ -217,7 +217,7 @@ function Cpu6502(hwobj) {
     }
 
     // Instruction length by opcode (including 65c02 extended instructions).
-    var instrlen = [
+    const instrlen = [
         2, 2, 2, 1, 2, 2, 2, 2,  1, 2, 1, 1, 3, 3, 3, 3,
         2, 2, 2, 1, 2, 2, 2, 2,  1, 3, 1, 1, 3, 3, 3, 3,
         3, 2, 2, 1, 2, 2, 2, 2,  1, 2, 1, 1, 3, 3, 3, 3,
@@ -240,7 +240,7 @@ function Cpu6502(hwobj) {
     ];
 
     // Cycle count by opcode (not including some caveats)
-    var cycle_count = [
+    const cycle_count = [
         7, 6, 2, 0, 5, 3, 5, 5,  3, 2, 2, 0, 6, 4, 6, 2,
         2, 5, 5, 0, 5, 4, 6, 6,  2, 4, 2, 0, 6, 4, 6, 2,
         6, 6, 2, 0, 3, 3, 5, 5,  4, 2, 2, 0, 4, 4, 6, 2,

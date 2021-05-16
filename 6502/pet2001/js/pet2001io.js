@@ -31,32 +31,32 @@
 //
 
 function PetIO(_hw, vid) {
-    var PIA1_PA  =      0x10,
-        PIA1_CRA =      0x11,
-        PIA1_PB  =      0x12,
-        PIA1_CRB =      0x13,
+    const PIA1_PA  =      0x10,
+          PIA1_CRA =      0x11,
+          PIA1_PB  =      0x12,
+          PIA1_CRB =      0x13,
 
-        PIA2_PA  =      0x20,
-        PIA2_CRA =      0x21,
-        PIA2_PB  =      0x22,
-        PIA2_CRB =      0x23,
+          PIA2_PA  =      0x20,
+          PIA2_CRA =      0x21,
+          PIA2_PB  =      0x22,
+          PIA2_CRB =      0x23,
 
-        VIA_DRB  =      0x40,
-        VIA_DRA  =      0x41,
-        VIA_DDRB =      0x42,
-        VIA_DDRA =      0x43,
-        VIA_T1CL =      0x44,
-        VIA_T1CH =      0x45,
-        VIA_T1LL =      0x46,
-        VIA_T1LH =      0x47,
-        VIA_T2CL =      0x48,
-        VIA_T2CH =      0x49,
-        VIA_SR   =      0x4a,
-        VIA_ACR  =      0x4b,
-        VIA_PCR  =      0x4c,
-        VIA_IFR  =      0x4d,
-        VIA_IER  =      0x4e,
-        VIA_ANH  =      0x4f;
+          VIA_DRB  =      0x40,
+          VIA_DRA  =      0x41,
+          VIA_DDRB =      0x42,
+          VIA_DDRA =      0x43,
+          VIA_T1CL =      0x44,
+          VIA_T1CH =      0x45,
+          VIA_T1LL =      0x46,
+          VIA_T1LH =      0x47,
+          VIA_T2CL =      0x48,
+          VIA_T2CH =      0x49,
+          VIA_SR   =      0x4a,
+          VIA_ACR  =      0x4b,
+          VIA_PCR  =      0x4c,
+          VIA_IFR  =      0x4d,
+          VIA_IER  =      0x4e,
+          VIA_ANH  =      0x4f;
 
     var hw = _hw;
     var video = vid;
