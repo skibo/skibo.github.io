@@ -244,8 +244,8 @@ function petkeyOnKeyDown(event) {
 
     // This is a hack to take back control of backspace key.
     if (code == 8) {
-	petkeyOnKeyPress(event);
-	return false;
+        petkeyOnKeyPress(event);
+        return false;
     }
 
     return true;

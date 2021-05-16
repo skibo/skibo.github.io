@@ -79,7 +79,7 @@ function Pet2001Video(context) {
     }
 
     var blankTimeout = null;
-    
+
     this.blankTimeoutFunc = function() {
         // console.log("screen blank time-out called");
         blankScreen();

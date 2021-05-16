@@ -250,7 +250,7 @@ function Cpu6502(hwobj) {
         2, 5, 5, 0, 4, 4, 6, 6,  2, 4, 3, 0, 0, 4, 6, 2,
         6, 6, 2, 0, 3, 3, 5, 5,  4, 2, 2, 0, 6, 4, 6, 2,
         2, 5, 5, 0, 4, 4, 6, 6,  2, 4, 4, 0, 6, 4, 6, 2,
-        
+
         2, 6, 2, 0, 3, 3, 3, 3,  2, 2, 2, 0, 4, 4, 4, 2,
         2, 6, 5, 0, 4, 4, 4, 4,  2, 5, 2, 0, 4, 5, 5, 2,
         2, 6, 2, 0, 3, 3, 3, 3,  2, 2, 2, 0, 4, 4, 4, 2,
@@ -293,7 +293,7 @@ function Cpu6502(hwobj) {
 //        console.log("cpu6502.cycle: a=%s x=%s y=%s p=%s sp=%s",
 //                      a.toString(16), x.toString(16), y.toString(16),
 //                      p.toString(16), sp.toString(16));
-        
+
         // debug
 //        if (a < 0 || a > 0xff ||
 //            x < 0 || x > 0xff ||
@@ -488,11 +488,11 @@ function Cpu6502(hwobj) {
         case 0x41:        /* EOR (ind, X) */
             addr = ind_x(operand);
             operand = readByte(addr);
-            eor_instr(operand);        
+            eor_instr(operand);
             break;
         case 0x45:        /* EOR zero page */
             operand = readByte(operand);
-            eor_instr(operand);        
+            eor_instr(operand);
             break;
         case 0x46:        /* LSR zero page */
             d8 = readByte(operand);
@@ -565,11 +565,11 @@ function Cpu6502(hwobj) {
         case 0x61:        /* ADC (ind,X) */
             addr = ind_x(operand);
             operand = readByte(addr);
-            adc_instr(operand);        
+            adc_instr(operand);
             break;
         case 0x65:        /* ADC zero page */
             operand = readByte(operand);
-            adc_instr(operand);        
+            adc_instr(operand);
             break;
         case 0x66:        /* ROR zero page */
             d8 = readByte(operand);
@@ -804,11 +804,11 @@ function Cpu6502(hwobj) {
             break;
         case 0xc4:        /* CPY zero */
             operand = readByte(operand);
-            cmp_instr(y, operand);        
+            cmp_instr(y, operand);
             break;
         case 0xc5:        /* CMP zero */
             operand = readByte(operand);
-            cmp_instr(a, operand);        
+            cmp_instr(a, operand);
             break;
         case 0xc6:        /* DEC zero */
             d8 = (readByte(operand) - 1) & 0xff;
@@ -828,11 +828,11 @@ function Cpu6502(hwobj) {
             break;
         case 0xcc:        /* CPY absolute */
             operand = readByte(operand);
-            cmp_instr(y, operand);        
+            cmp_instr(y, operand);
             break;
         case 0xcd:        /* CMP absolute */
             operand = readByte(operand);
-            cmp_instr(a, operand);        
+            cmp_instr(a, operand);
             break;
         case 0xce:        /* DEC absolute */
             d8 = (readByte(operand) - 1) & 0xff;
@@ -1007,4 +1007,3 @@ function Cpu6502(hwobj) {
             ' SP=' + sp.toString(16);
     }
 }
-

@@ -30,25 +30,25 @@ function PetIEEE(_hw) {
 
     // State machine
     var STATE_IDLE = 0,
-    	STATE_LISTEN = 1,
-    	STATE_FNAME = 2,
-    	STATE_LOAD = 3,
+        STATE_LISTEN = 1,
+        STATE_FNAME = 2,
+        STATE_LOAD = 3,
         STATE_SAVE = 4,
         STATE_SAVE1 = 5;
     var state = STATE_IDLE;
 
     // signals
-    var	dio = 0x00,
-	ndac_i = true,
-    	ndac_o = true,
-    	nrfd_i = true,
-    	nrfd_o = true,
-    	atn = true,
-    	dav_i = true,
-    	dav_o = true,
-    	srq = true,
-    	eoi_i = true;
-    	eoi_o = true;
+    var dio = 0x00,
+        ndac_i = true,
+        ndac_o = true,
+        nrfd_i = true,
+        nrfd_o = true,
+        atn = true,
+        dav_i = true,
+        dav_o = true,
+        srq = true,
+        eoi_i = true;
+        eoi_o = true;
 
     var MY_ADDRESS = 8;
     var filename;
