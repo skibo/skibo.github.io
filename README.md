@@ -6,6 +6,10 @@ and track changes I occasionally make:
 
 https://skibo.github.io/6502/pet2001
 
+I also have an Apple \]\[+ emulator but it is not very advanced:
+
+https://skibo.github.io/6502/apple2
+
 I also made this page a while back to solve and create Sudoku puzzles:
 
 https://skibo.github.io/sudoku/
