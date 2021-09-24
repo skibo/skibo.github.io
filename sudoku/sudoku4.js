@@ -46,7 +46,7 @@ function progress(n,p) {
 
 	if (useLetters)
 	    p = puzzleToLetters(p);
-	img.src = 'puzzleimage.php?p=' + p;
+	img.src = 'https://www.skibo.net/sudoku/puzzleimage.php?p=' + p;
 
 	if (++currentPuzzleId < 4)
 	    createPuzzle(minHints, progress);

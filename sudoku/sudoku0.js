@@ -195,7 +195,7 @@ function modifyCell(x,y) {
     e.style.color = "black";
 
     var link = document.getElementById("smallLink");
-    link.href = "puzzleimage.php?p=" + puzzle;
+    link.href = "https://www.skibonet/sudoku/puzzleimage.php?p=" + puzzle;
 }
 
 function onUseLetters() {
