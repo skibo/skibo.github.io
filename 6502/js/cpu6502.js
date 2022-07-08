@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2012-2014 Thomas Skibo.
+// Copyright (c) 2012-2022 Thomas Skibo.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -26,7 +26,7 @@
 //
 // cpu6502.js
 //
-//      Converted from a C program I wrote a couple years ago.
+//      Converted from a C program I wrote many years ago.
 //
 
 function Cpu6502(hwobj) {
@@ -90,9 +90,18 @@ function Cpu6502(hwobj) {
 
     function ind_y(operand) {
         var addr = readByte(operand);
+        if (addr + y > 0xff)
+            cycle_delay++;
         addr |= readByte((operand + 1) & 0xff) << 8;
         addr += y;
         return addr;
+    }
+
+    // Add one-clock delay in some instructions when adding index to absolute
+    // address crosses a page boundary.
+    function abs_delay(operand, r) {
+        if ((operand & 0xff) + r > 0xff)
+            cycle_delay++;
     }
 
     function set_flag(flag, cond) {
@@ -160,7 +169,6 @@ function Cpu6502(hwobj) {
             result += (a & 0xf0) + (d8 & 0xf0);
             if ((result & 0xfff0) > 0x90)
                 result += 0x60;
-            cycle_delay++;
         }
         else
             result = a + d8 + ((p & P_C) ? 1 : 0);
@@ -183,7 +191,6 @@ function Cpu6502(hwobj) {
             result += (a & 0xf0) - (d8 & 0xf0);
             if ((result & 0x100) != 0)
                 result -= 0x60;
-            cycle_delay++;
         }
         else
             result = a - d8 - ((p & P_C) ? 0 : 1);
@@ -209,11 +216,17 @@ function Cpu6502(hwobj) {
     }
 
     function branch_instr(operand) {
+        var old_pc = pc;
+
         if (operand >= 0x80)
             pc -= 0x100 - operand;
         else
             pc += operand;
-        cycle_delay++; // branch take adds a cycle
+
+        cycle_delay++; // taken branch take adds a cycle
+
+        if ((old_pc & 0xff00) != (pc & 0xff00))
+            cycle_delay++; // branch across page adds a cycle
     }
 
     // Instruction length by opcode (including 65c02 extended instructions).
@@ -242,14 +255,14 @@ function Cpu6502(hwobj) {
     // Cycle count by opcode (not including some caveats)
     const cycle_count = [
         7, 6, 2, 0, 5, 3, 5, 5,  3, 2, 2, 0, 6, 4, 6, 2,
-        2, 5, 5, 0, 5, 4, 6, 6,  2, 4, 2, 0, 6, 4, 6, 2,
+        2, 5, 5, 0, 5, 4, 6, 6,  2, 4, 2, 0, 6, 4, 7, 2,
         6, 6, 2, 0, 3, 3, 5, 5,  4, 2, 2, 0, 4, 4, 6, 2,
-        2, 5, 5, 0, 4, 4, 6, 6,  2, 4, 2, 0, 4, 4, 6, 2,
+        2, 5, 5, 0, 4, 4, 6, 6,  2, 4, 2, 0, 4, 4, 7, 2,
 
         6, 6, 2, 0, 3, 3, 5, 5,  3, 2, 2, 0, 3, 4, 6, 2,
-        2, 5, 5, 0, 4, 4, 6, 6,  2, 4, 3, 0, 0, 4, 6, 2,
-        6, 6, 2, 0, 3, 3, 5, 5,  4, 2, 2, 0, 6, 4, 6, 2,
-        2, 5, 5, 0, 4, 4, 6, 6,  2, 4, 4, 0, 6, 4, 6, 2,
+        2, 5, 5, 0, 4, 4, 6, 6,  2, 4, 3, 0, 0, 4, 7, 2,
+        6, 6, 2, 0, 3, 3, 5, 5,  4, 2, 2, 0, 5, 4, 6, 2,
+        2, 5, 5, 0, 4, 4, 6, 6,  2, 4, 4, 0, 6, 4, 7, 2,
 
         2, 6, 2, 0, 3, 3, 3, 3,  2, 2, 2, 0, 4, 4, 4, 2,
         2, 6, 5, 0, 4, 4, 4, 4,  2, 5, 2, 0, 4, 5, 5, 2,
@@ -257,9 +270,9 @@ function Cpu6502(hwobj) {
         2, 5, 5, 0, 4, 4, 4, 4,  2, 4, 2, 0, 4, 4, 4, 2,
 
         2, 6, 2, 0, 3, 3, 5, 5,  2, 2, 2, 3, 4, 4, 6, 2,
-        2, 5, 5, 0, 4, 4, 6, 6,  2, 4, 3, 3, 0, 4, 6, 2,
+        2, 5, 5, 0, 4, 4, 6, 6,  2, 4, 3, 3, 0, 4, 7, 2,
         2, 6, 2, 0, 3, 3, 5, 5,  2, 2, 2, 0, 4, 4, 6, 2,
-        2, 5, 5, 0, 4, 4, 6, 6,  2, 4, 4, 0, 0, 4, 6, 2
+        2, 5, 5, 0, 4, 4, 6, 6,  2, 4, 4, 0, 0, 4, 7, 2
     ];
 
     this.cycle = function() {
@@ -384,10 +397,12 @@ function Cpu6502(hwobj) {
             p &= ~P_C;
             break;
         case 0x19:        /* ORA absolute,Y */
+            abs_delay(operand, y);
             operand = readByte(operand + y);
             or_instr(operand);
             break;
         case 0x1d:        /* ORA absolute,X */
+            abs_delay(operand, x);
             operand = readByte(operand + x);
             or_instr(operand);
             break;
@@ -467,10 +482,12 @@ function Cpu6502(hwobj) {
             p |= P_C;
             break;
         case 0x39:        /* AND absolute, Y */
+            abs_delay(operand, y);
             operand = readByte(operand + y);
             and_instr(operand);
             break;
         case 0x3d:        /* AND absolute, X */
+            abs_delay(operand, x);
             operand = readByte(operand + x);
             and_instr(operand);
             break;
@@ -544,10 +561,12 @@ function Cpu6502(hwobj) {
             p &= ~P_I;
             break;
         case 0x59:        /* EOR absolute,Y */
+            abs_delay(operand, y);
             operand = readByte(operand + y);
             eor_instr(operand);
             break;
         case 0x5d:        /* EOR absolute,X */
+            abs_delay(operand, x);
             operand = readByte(operand + x);
             eor_instr(operand);
             break;
@@ -622,10 +641,12 @@ function Cpu6502(hwobj) {
             p |= P_I;
             break;
         case 0x79:        /* ADC absolute,Y */
+            abs_delay(operand, y);
             operand = readByte(operand + y);
             adc_instr(operand);
             break;
         case 0x7d:        /* ADC absolute,X */
+            abs_delay(operand, x);
             operand = readByte(operand + x);
             adc_instr(operand);
             break;
@@ -774,6 +795,7 @@ function Cpu6502(hwobj) {
             p &= ~P_V;
             break;
         case 0xb9:        /* LDA absolute, Y */
+            abs_delay(operand, y);
             a = readByte(operand + y);
             set_nz(a);
             break;
@@ -782,14 +804,17 @@ function Cpu6502(hwobj) {
             set_nz(x);
             break;
         case 0xbc:        /* LDY absolute, X */
+            abs_delay(operand, x);
             y = readByte(operand + x);
             set_nz(y);
             break;
         case 0xbd:        /* LDA absolute, X */
+            abs_delay(operand, x);
             a = readByte(operand + x);
             set_nz(a);
             break;
         case 0xbe:        /* LDX absolute, Y */
+            abs_delay(operand, y);
             x = readByte(operand + y);
             set_nz(x);
             break;
@@ -863,10 +888,12 @@ function Cpu6502(hwobj) {
             p &= ~P_D;
             break;
         case 0xd9:        /* CMP absolute,Y */
+            abs_delay(operand, y);
             operand = readByte(operand + y);
             cmp_instr(a, operand);
             break;
         case 0xdd:        /* CMP absolute,X */
+            abs_delay(operand, x);
             operand = readByte(operand + x);
             cmp_instr(a, operand);
             break;
@@ -944,10 +971,12 @@ function Cpu6502(hwobj) {
             p |= P_D;
             break;
         case 0xf9:        /* SBC absolute,Y */
+            abs_delay(operand, y);
             operand = readByte(operand + y);
             sbc_instr(operand);
             break;
         case 0xfd:        /* SBC absolute,X */
+            abs_delay(operand, x);
             operand = readByte(operand + x);
             sbc_instr(operand);
             break;
@@ -978,4 +1007,7 @@ function Cpu6502(hwobj) {
         cycle_delay = 0;
     }
 
+    this.getPc = function() {
+        return pc;
+    }
 }
