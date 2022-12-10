@@ -593,9 +593,8 @@ function PetIO(_hw, vid) {
             break;
         case VIA_PCR:
             /* Did we change CA2 output? */
-            if ((via_pcr & 0x0c) == 0x0c && (d8 & 0x0c) == 0x0c &&
-                ((via_pcr ^ d8) & 0x02) != 0) {
-                video.setCharset((d8 & 0x02) != 0);
+            if ((via_pcr & 0x0e) != (d8 & 0x0e)) {
+                video.setCharset((d8 & 0x0e) != 0x0c);
             }
             via_pcr = d8;
             break;
