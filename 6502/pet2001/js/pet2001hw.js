@@ -30,8 +30,8 @@ const VIDRAM_ADDR =   0x8000,
       VIDRAM_SIZE =   0x0400,
       IO_ADDR =       0xe800,
       IO_SIZE =       0x0800,
-      ROM_ADDR =      0xC000,
-      ROM_SIZE =      0x3800,
+      ROM_ADDR =      0xB000,
+      ROM_SIZE =      0x4800,
       MAX_RAM_SIZE =  0x8000;
 
 

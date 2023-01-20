@@ -54,8 +54,11 @@ function Pet2001(context) {
 
     this.setRomVers = function(vers) {
         romVers = vers;
-        var romImage = (vers == 2) ? petRom2 : petRom1;
-        hw.writeRom(ROM_ADDR, romImage, romImage.length);
+        var romImage = (vers == 4) ? petRom4 :
+            ((vers == 2) ? petRom2 : petRom1);
+        hw.writeRom((vers == 4) ? ROM_ADDR : ROM_ADDR + 0x1000,
+                    romImage, romImage.length);
+        video.setCharvers(vers > 2);
         this.reset();
     }
 
