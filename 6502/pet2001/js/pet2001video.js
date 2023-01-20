@@ -28,7 +28,9 @@ function Pet2001Video(context) {
     this.vidram = new Array(VIDRAM_SIZE);
 
     var ctx = context;
-    var charset = petCharRom1;
+    var charset = false;
+    var charvers = false;
+    var charrom = petCharRom1g;
     var blank = false;
 
     // Draw a character from character ROM to canvas.
@@ -45,7 +47,7 @@ function Pet2001Video(context) {
         ctx.fillStyle = "#effeff";
 
         for (var y = 0; y < 8; y++) {
-            var bits = charset[(d8 & 0x7f) * 8 + y];
+            var bits = charrom[(d8 & 0x7f) * 8 + y];
 
             // Inverse?
             if ((d8 & 0x80) != 0)
@@ -107,7 +109,15 @@ function Pet2001Video(context) {
 
     // Called in response to character set signal change.
     this.setCharset = function(flag) {
-        charset = flag ? petCharRom2 : petCharRom1;
+        charrom = flag ? (charvers ? petCharRom2b : petCharRom1b) :
+            (charvers ? petCharRom2g : petCharRom1g);
+        charset = flag;
         redrawScreen(this.vidram);
+    }
+
+    // Set character ROM version
+    this.setCharvers = function(flag) {
+        charvers = flag;
+        this.setCharset(charset);
     }
 }
