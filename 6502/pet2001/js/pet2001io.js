@@ -441,6 +441,7 @@ function PetIO(_hw, vid) {
             break;
         case PIA1_CRB:
             pia1_crb = (pia1_crb & 0xc0) | (d8 & 0x3f);
+            this.updateIrq();
             break;
 
         case PIA2_PA:
