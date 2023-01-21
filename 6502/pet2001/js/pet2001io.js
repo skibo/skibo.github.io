@@ -650,6 +650,8 @@ function PetIO(_hw, vid) {
             video_cycle = 0;
         }
 
+        video.cycle(video_cycle);
+
         /* Handle VIA.TIMER1 */
         if (via_t1_undf) {
             /* T1 underflow.  Reload. */

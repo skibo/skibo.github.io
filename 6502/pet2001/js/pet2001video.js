@@ -25,85 +25,49 @@
 //
 
 function Pet2001Video(context) {
-    this.vidram = new Array(VIDRAM_SIZE);
+    // VCYCLE0 is the number of 1us cycles after the SYNC signal goes low that
+    // the first video RAM data is read.  Video bytes are read each of the
+    // next 40 cycles.  The next line starts being read 64 cycles after the
+    // first.
+    var VCYCLE0 = 3862;
+    var VCYCLEEND = (VCYCLE0 + (64 * 199) + 40);
+
+    var vidram = new Array(VIDRAM_SIZE);
+    var bitmap = new Array(40 * 200);
 
     var ctx = context;
     var charset = false;
     var charvers = false;
     var charrom = petCharRom1g;
     var blank = false;
+    var blank_delay = 0;
 
-    // Draw a character from character ROM to canvas.
-    function drawChar(addr, d8) {
-        // Determine location from video memory address (offset)
-        var col = addr % 40;
-        var row = Math.floor(addr / 40);
+    for (var i = 0; i < 40 * 200; i++)
+        bitmap[i] = 0;
 
-        // Black-out entire character
-        ctx.fillStyle = "#000000";
-        ctx.fillRect(col * 16, row * 16, 16, 16);
-
-        // Color for "white" pixels
-        ctx.fillStyle = "#effeff";
-
-        for (var y = 0; y < 8; y++) {
-            var bits = charrom[(d8 & 0x7f) * 8 + y];
-
-            // Inverse?
-            if ((d8 & 0x80) != 0)
-                bits ^= 0xff;
-
-            for (var x = 0; x < 8; x++) {
-                if ((bits & 0x80) != 0)
-                    ctx.fillRect(col * 16 + x * 2, row * 16 + y * 2, 2, 2);
-                bits <<= 1;
-            }
-        }
-    }
-
-    // Redraw entire screen after removing blanking or changing char set.
-    function redrawScreen(vidram) {
-        for (var addr = 0; addr < 1000; addr++)
-            drawChar(addr, vidram[addr]);
-    }
-
-    // Blank screen
-    function blankScreen() {
-        ctx.fillStyle = "#000000";
-        ctx.fillRect(0, 0, 640, 400);
-    }
+    ctx.fillStyle = "#000000";
+    ctx.fillRect(0, 0, 640, 400);
 
     // Write to video ram.
     this.write = function(addr, d8) {
-        this.vidram[addr] = d8;
-        if (addr < 1000 && !blank)
-            drawChar(addr, d8);
+        vidram[addr] = d8;
     }
 
-    var blankTimeout = null;
-
-    this.blankTimeoutFunc = function() {
-        // console.log("screen blank time-out called");
-        blankScreen();
-        blankTimeout = null;
+    // Read from video ram.
+    this.read = function(addr) {
+        return vidram[addr];
     }
 
     // Called in response to change in blanking signal.
-    // Blanking of the screen is delayed by 100ms to avoid flickering
-    // during scrolling.
+    // Blanking of the screen is delayed by 20ms to avoid flickering
+    // during scrolling.  (It takes 18,000 cycles to scroll the screen.)
     this.setVideoBlank = function(flag) {
-        if (flag && !blank) {
-            if (!blankTimeout)
-                blankTimeout = setTimeout("blankTimeoutFunc()", 100);
-            blank = true;
-        }
-        else if (blank && !flag) {
-            if (blankTimeout) {
-                clearTimeout(blankTimeout);
-                blankTimeout = null;
-            }
-            redrawScreen(this.vidram);
-            blank = false;
+        if (!blank && flag)
+            blank_delay = 20000;
+        else {
+            if (!flag)
+                blank_delay = 0;
+            blank = flag;
         }
     }
 
@@ -112,12 +76,49 @@ function Pet2001Video(context) {
         charrom = flag ? (charvers ? petCharRom2b : petCharRom1b) :
             (charvers ? petCharRom2g : petCharRom1g);
         charset = flag;
-        redrawScreen(this.vidram);
     }
 
     // Set character ROM version
     this.setCharvers = function(flag) {
         charvers = flag;
         this.setCharset(charset);
+    }
+
+    this.cycle = function(video_cycle) {
+        if (blank_delay > 0) {
+            if (--blank_delay == 0)
+                blank = true;
+        }
+
+        if (video_cycle < VCYCLE0 || video_cycle >= VCYCLEEND)
+            return;
+
+        // Which byte is being read from video RAM?
+        var col = (video_cycle - VCYCLE0) & 0x3f;
+        if (col > 39)
+            return;
+        var row = (video_cycle - VCYCLE0) >> 6;
+
+        // Get byte from video memory.
+        var vbyte = vidram[col + (row >> 3) * 40];
+        var cdata = 0;
+        if (!blank) {
+            cdata = charrom[(vbyte & 0x7f) * 8 + (row & 0x07)];
+            if ((vbyte & 0x80) != 0)
+                cdata ^= 0xff;
+        }
+
+        // Update pixels?
+        if (cdata != bitmap[col + row * 40]) {
+            bitmap[col + row * 40] = cdata;
+            ctx.fillStyle = "#000000";
+            ctx.fillRect(col * 16, row * 2, 16, 2);
+            ctx.fillStyle = "#effeff"; // Color for "white" pixels
+            for (x = 0; x < 8; x++) {
+                if ((cdata & 0x80) != 0)
+                    ctx.fillRect(col * 16 + x * 2, row * 2, 2, 2);
+                cdata <<= 1;
+            }
+        }
     }
 }

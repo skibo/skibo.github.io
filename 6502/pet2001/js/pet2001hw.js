@@ -105,7 +105,7 @@ function Pet2001hw(vid) {
         else if (addr >= IO_ADDR + IO_SIZE)
             d8 = rom[addr - ROM_ADDR - IO_SIZE];
         else if (addr >= VIDRAM_ADDR && addr < VIDRAM_ADDR + VIDRAM_SIZE)
-            d8 = video.vidram[addr - VIDRAM_ADDR];
+            d8 = video.read(addr - VIDRAM_ADDR);
         else if (addr >= IO_ADDR && addr < IO_ADDR + IO_SIZE)
             d8 = io.read(addr - IO_ADDR);
         else
