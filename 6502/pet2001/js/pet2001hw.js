@@ -27,7 +27,7 @@
 // pet2001hw.js
 
 const VIDRAM_ADDR =   0x8000,
-      VIDRAM_SIZE =   0x0400,
+      VIDRAM_SIZE =   0x1000,
       IO_ADDR =       0xe800,
       IO_SIZE =       0x0800,
       ROM_ADDR =      0xB000,

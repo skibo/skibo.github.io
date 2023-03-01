@@ -31,8 +31,9 @@ function Pet2001Video(context) {
     // first.
     var VCYCLE0 = 3862;
     var VCYCLEEND = (VCYCLE0 + (64 * 199) + 40);
+    var PET_VRAM_SIZE = 0x400;
 
-    var vidram = new Array(VIDRAM_SIZE);
+    var vidram = new Array(PET_VRAM_SIZE);
     var bitmap = new Array(40 * 200);
 
     var ctx = context;
@@ -50,12 +51,12 @@ function Pet2001Video(context) {
 
     // Write to video ram.
     this.write = function(addr, d8) {
-        vidram[addr] = d8;
+        vidram[addr & (PET_VRAM_SIZE - 1)] = d8;
     }
 
     // Read from video ram.
     this.read = function(addr) {
-        return vidram[addr];
+        return vidram[addr & (PET_VRAM_SIZE - 1)];
     }
 
     // Called in response to change in blanking signal.
