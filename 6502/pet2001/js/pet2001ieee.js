@@ -50,7 +50,10 @@ function PetIEEE(_hw) {
         eoi_i = true;
         eoi_o = true;
 
-    var MY_ADDRESS = 8;
+    var MY_ADDRESS = 8,
+        SENDER_TIMEOUT = 64000,
+        senderTimeout;
+
     var filename;
     var oldRom = false;
 
@@ -169,6 +172,7 @@ function PetIEEE(_hw) {
         save_data = "";
         oldRom = false;
         data_index = 0;
+        senderTimeout = 0;
     }
 
     this.DIOout = function (d8) {
@@ -196,9 +200,15 @@ function PetIEEE(_hw) {
                 dav_i = true;
                 eoi_i = true;
                 data_index++;
-                if (oldRom && data_index == load_data.length) {
-                    alert("Load completed.  You must hit STOP.");
-                    state = STATE_IDLE;
+                if (data_index == load_data.length) {
+                    senderTimeout = 0;
+                    if (oldRom) {
+                        alert("Load completed.  You must hit STOP.");
+                        state = STATE_IDLE;
+                    }
+                }
+                else {
+                    senderTimeout = SENDER_TIMEOUT;
                 }
             }
         }
@@ -252,6 +262,7 @@ function PetIEEE(_hw) {
                 // Put first data on bus.
                 dio = load_data[0] ^ 0xff;
                 dav_i = false;
+                senderTimeout = SENDER_TIMEOUT;
             }
         }
         atn = flag;
@@ -282,5 +293,11 @@ function PetIEEE(_hw) {
     this.SRQin = function() {
         // console.log("PetIEEE.SRQin");
         return srq;
+    }
+
+    this.checkTimeout = function() {
+	if (state == STATE_LOAD && senderTimeout && --senderTimeout == 0) {
+	    this.reset();
+	}
     }
 }

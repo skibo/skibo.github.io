@@ -742,6 +742,7 @@ function PetIO(_hw, vid) {
             via_sr_cntr = (via_acr & 0x10) == 0 ? 8 : 9;
         }
 
+        ieee.checkTimeout();
     } // cycle()
 
     this.ieeeLoadData = function(addr, bytes) {
