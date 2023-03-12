@@ -24,10 +24,45 @@
 // SUCH DAMAGE.
 //
 
-// pet2001io.c
+// pet2001io.js
 //
 //      This is the hard part: modeling the PET hardware.  I first did this
 //      in Verilog, then C, and now Javascript.
+//
+
+// PET I/O in a nut-shell:
+//
+// PIA1.PA[3:0] =>  keyrow (0..9, 11=light LED)
+//     .PA[4]   <=  cass #1 switch
+//     .PA[5]   <=  cass #2 switch
+//     .PA[6]   <=  _EOI in
+//     .PA[7]   <=  diag jumper (0=diag, 1=basic)
+//     .PB[7:0] <=  keyin
+//     .CA1     <=  cass #1 read
+//     .CA2     =>  blank / _EOI out
+//     .CB1     <=  sync
+//     .CB2     =>  cass #1 motor
+//
+// PIA2.PA[7:0] <=  IEEE DI
+//     .PB[7:0] =>  IEEE DO
+//     .CA1     <=  _ATN in
+//     .CA2     =>  _NDAC out
+//     .CB1     <=  _SRQ in
+//     .CB2     =>  _DAV out
+//
+//  VIA.PA[7:0] <=> User Port
+//     .PB[0]   <=  _NDAC in
+//     .PB[1]   =>  _NRFD out
+//     .PB[2]   =>  _ATN out
+//     .PB[3]   =>  cass write
+//     .PB[4]   =>  cass #2 motor
+//     .PB[5]   <=  sync
+//     .PB[6]   <=  _NRFD in
+//     .PB[7]   <=  _DAV in
+//     .CA1     <=> User Port
+//     .CA2     =>  charset sel (0=graphics, 1=lower-case)
+//     .CB1     <=  cass #2 read
+//     .CB2     <=> User Port (usually sound output)
 //
 
 function PetIO(_hw, vid) {
