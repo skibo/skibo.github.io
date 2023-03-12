@@ -78,18 +78,18 @@ function PetIO(_hw, vid) {
     var pia1_ca2 =      0;
     var pia1_cb1 =      0;
 
-    var pia2_pa_in =    0;
+    var pia2_pa_in =    0xff;
     var pia2_pa_out =   0;
     var pia2_ddra =     0;
     var pia2_cra =      0;
-    var pia2_pb_in =    0;
+    var pia2_pb_in =    0xff;
     var pia2_pb_out =   0;
     var pia2_ddrb =     0;
     var pia2_crb =      0;
 
-    var via_drb_in =    0;
+    var via_drb_in =    0xff;
     var via_drb_out =   0;
-    var via_dra_in =    0;
+    var via_dra_in =    0xff;
     var via_dra_out =   0;
     var via_ddrb =      0;
     var via_ddra =      0;
@@ -132,18 +132,18 @@ function PetIO(_hw, vid) {
         pia1_ca2 =      0;
         pia1_cb1 =      0;
 
-        pia2_pa_in =    0;
+        pia2_pa_in =    0xff;
         pia2_pa_out =   0;
         pia2_ddra =     0;
         pia2_cra =      0;
-        pia2_pb_in =    0;
+        pia2_pb_in =    0xff;
         pia2_pb_out =   0;
         pia2_ddrb =     0;
         pia2_crb =      0;
 
-        via_drb_in =    0;
+        via_drb_in =    0xff;
         via_drb_out =   0;
-        via_dra_in =    0;
+        via_dra_in =    0xff;
         via_dra_out =   0;
         via_ddrb =      0;
         via_ddra =      0;
