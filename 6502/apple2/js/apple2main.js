@@ -31,6 +31,7 @@ var apple2plus = new Apple2Plus(vidContext);
 var appleIntervalTime = 50;
 
 window.onkeypress = apple2OnKeyPress;
+window.onkeydown = apple2OnKeyDown;
 
 function appleIntervalFunc() {
     apple2plus.cycle(1000 * appleIntervalTime);

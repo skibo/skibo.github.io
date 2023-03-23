@@ -38,6 +38,10 @@ function apple2OnKeyPress(event) {
     if (event.charCode == 0 && event.keyCode == 37)
         code = 0x08;
 
+    // delete
+    if (event.charCode == 0 && event.keyCode == 8)
+        code = 0x08;
+
     // right arrow
     if (event.charCode == 0 && event.keyCode == 39)
         code = 0x15;
@@ -57,3 +61,15 @@ function apple2OnKeyPress(event) {
     return false;
 }
 
+function apple2OnKeyDown(event) {
+    var code = event.charCode != 0 ? event.charCode : event.keyCode;
+    // console.log("apple2OnKeyDown: code=0x%s", code.toString(16));
+
+    // Grab arrow and delete keys.
+    if (code == 37 || code == 39 || code == 8) {
+        apple2OnKeyPress(event);
+        return false;
+    }
+
+    return true;
+}
