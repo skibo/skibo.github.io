@@ -29,9 +29,9 @@ function Pet2001Video(context) {
     // the first video RAM data is read.  Video bytes are read each of the
     // next 40 cycles.  The next line starts being read 64 cycles after the
     // first.
-    var VCYCLE0 = 3862;
-    var VCYCLEEND = (VCYCLE0 + (64 * 199) + 40);
-    var PET_VRAM_SIZE = 0x400;
+    const VCYCLE0 = 3862;
+    const VCYCLEEND = (VCYCLE0 + (64 * 199) + 40);
+    const PET_VRAM_SIZE = 0x400;
 
     var vidram = new Array(PET_VRAM_SIZE);
     var bitmap = new Array(40 * 200);
@@ -112,13 +112,21 @@ function Pet2001Video(context) {
         // Update pixels?
         if (cdata != bitmap[col + row * 40]) {
             bitmap[col + row * 40] = cdata;
-            ctx.fillStyle = "#000000";
-            ctx.fillRect(col * 16, row * 2, 16, 2);
-            ctx.fillStyle = "#effeff"; // Color for "white" pixels
-            for (x = 0; x < 8; x++) {
-                if ((cdata & 0x80) != 0)
-                    ctx.fillRect(col * 16 + x * 2, row * 2, 2, 2);
-                cdata <<= 1;
+            if (cdata == 0x00) {
+                ctx.fillStyle = "#000000";
+                ctx.fillRect(col * 16, row * 2, 16, 2);
+            } else if (cdata == 0xff) {
+                ctx.fillStyle = "#effeff"; // Color for "white" pixels
+                ctx.fillRect(col * 16, row * 2, 16, 2);
+            } else {
+                ctx.fillStyle = "#000000";
+                ctx.fillRect(col * 16, row * 2, 16, 2);
+                ctx.fillStyle = "#effeff"; // Color for "white" pixels
+                for (x = 0; x < 8; x++) {
+                    if ((cdata & 0x80) != 0)
+                        ctx.fillRect(col * 16 + x * 2, row * 2, 2, 2);
+                    cdata <<= 1;
+                }
             }
         }
     }
