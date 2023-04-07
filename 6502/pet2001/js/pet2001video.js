@@ -33,8 +33,8 @@ function Pet2001Video(context) {
     const VCYCLEEND = (VCYCLE0 + (64 * 199) + 40);
     const PET_VRAM_SIZE = 0x400;
 
-    var vidram = new Array(PET_VRAM_SIZE);
-    var bitmap = new Array(40 * 200);
+    var vidram = new Uint8Array(PET_VRAM_SIZE);
+    var bitmap = new Uint8Array(40 * 200);
 
     var ctx = context;
     var charset = false;

@@ -83,7 +83,7 @@ function loadFile() {
         var size = levent.target.result.byteLength;
         var addr = data.getUint8(0) + data.getUint8(1) * 256;
 
-        var bytes = Array(size - 2);
+        var bytes = new Array(size - 2);
         for (var i = 0; i < size - 2; i++)
             bytes[i] = data.getUint8(i + 2);
 

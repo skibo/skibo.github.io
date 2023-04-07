@@ -96,7 +96,7 @@ function PetIO(_hw, vid) {
     var hw = _hw;
     var video = vid;
     var ieee = new PetIEEE(hw);
-    var keyrow = new Array(10);
+    var keyrow = new Uint8Array(10);
 
     var i;
     for (i = 0; i < 10; i++)

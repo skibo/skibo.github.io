@@ -40,8 +40,8 @@ const VIDRAM_ADDR =   0x8000,
 // read(), write(), reset(), cycle(), irq_signal, and nmi_signal.
 //
 function Pet2001hw(vid) {
-    var ram = new Array(MAX_RAM_SIZE);
-    var rom = new Array(ROM_SIZE);
+    var ram = new Uint8Array(MAX_RAM_SIZE);
+    var rom = new Uint8Array(ROM_SIZE);
     var ramsize = 32768;
     var video = vid;
     var io = new PetIO(this, video);
