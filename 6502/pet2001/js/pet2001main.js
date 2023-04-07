@@ -92,7 +92,7 @@ function loadFile() {
 }
 
 function saveFile(filename, data) {
-    console.log("saveFile: %s", filename);
+    // console.log("saveFile: %s", filename);
 
     var foo = window.document.createElement('a');
     foo.href = "data:application/octet-stream;base64," + btoa(data);
