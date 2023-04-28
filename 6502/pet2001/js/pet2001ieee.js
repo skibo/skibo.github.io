@@ -62,8 +62,8 @@ function PetIEEE(_hw) {
     var data_index;
     var save_data;
 
-    this.ieeeLoadData = function(addr, bytes) {
-        load_data = [ addr & 0xff, addr >> 8 ].concat(bytes);
+    this.ieeeLoadData = function(bytes) {
+        load_data = bytes;
     }
 
     function dataIn(d8) {

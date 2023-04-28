@@ -91,8 +91,8 @@ function Pet2001hw(vid) {
         ramsize = size;
     }
 
-    this.ieeeLoadData = function(addr, bytes) {
-        io.ieeeLoadData(addr, bytes);
+    this.ieeeLoadData = function(bytes) {
+        io.ieeeLoadData(bytes);
     }
 
     this.read = function(addr) {

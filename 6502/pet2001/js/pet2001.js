@@ -69,8 +69,8 @@ function Pet2001(context) {
     }
 
     // Load a program into IEEE input buffer.
-    this.ieeeLoadData = function(addr, bytes) {
-        hw.ieeeLoadData(addr, bytes);
+    this.ieeeLoadData = function(bytes) {
+        hw.ieeeLoadData(bytes);
     }
 
     this.blankTimeoutFunc = function() {

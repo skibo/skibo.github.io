@@ -81,13 +81,12 @@ function loadFile() {
     fread.onload = function(levent) {
         var data = new DataView(levent.target.result);
         var size = levent.target.result.byteLength;
-        var addr = data.getUint8(0) + data.getUint8(1) * 256;
 
-        var bytes = new Array(size - 2);
-        for (var i = 0; i < size - 2; i++)
-            bytes[i] = data.getUint8(i + 2);
+        var bytes = new Array(size);
+        for (var i = 0; i < size; i++)
+            bytes[i] = data.getUint8(i);
 
-        pet2001.ieeeLoadData(addr, bytes);
+        pet2001.ieeeLoadData(bytes);
     }
 }
 
@@ -100,6 +99,11 @@ function saveFile(filename, data) {
     document.body.appendChild(foo);
     foo.click();
     document.body.removeChild(foo);
+}
+
+function checkersButton() {
+    pet2001.ieeeLoadData(checkers2);
+    petkeyQueueUp("load\"checkers2\",8\rrun\r");
 }
 
 function blankTimeoutFunc() {

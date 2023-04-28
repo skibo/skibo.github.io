@@ -138,7 +138,7 @@ document.addEventListener('touchmove', function (event) {
     var petkey = document.getElementById('petkey');
     var x = touch.pageX - petkey.offsetLeft;
     var y = touch.pageY - petkey.offsetTop;
-    //console.log("onTouchMove() called! x=%d y=%d", x, y);
+    // console.log("onTouchMove() called! x=%d y=%d", x, y);
 
     // XXX: punt for now.
 }, false);
@@ -148,7 +148,7 @@ document.addEventListener('touchend', function (event) {
     var petkey = document.getElementById('petkey');
     var x = touch.pageX - petkey.offsetLeft;
     var y = touch.pageY - petkey.offsetTop;
-    //console.log("onTouchEnd() called! x=%d y=%d", x, y);
+    // console.log("onTouchEnd() called! x=%d y=%d", x, y);
 
     if (((x >= 13 && x < 547) || (x >= 594 && x < 788)) &&
         (y >= 13 && y < 257)) {
@@ -249,4 +249,17 @@ function petkeyOnKeyDown(event) {
     }
 
     return true;
+}
+
+function petkeyQueueUp(s) {
+    for (var i = 0; i < s.length; i++) {
+        petkeyKeyQueue.push(0);
+        petkeyKeyQueue.push(s[i].charCodeAt());
+    }
+
+    if (petkeyKeypressTimeoutHandle == null) {
+        petkeyKeypressTimeoutHandle =
+            setTimeout("petkeyKeypressTimeout()",
+                       petkeyKeypressTimeoutTime);
+    }
 }
