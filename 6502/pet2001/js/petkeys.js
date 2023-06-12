@@ -242,8 +242,8 @@ function petkeyOnKeyDown(event) {
     var code = event.charCode != 0 ? event.charCode : event.keyCode;
     // console.log("petkeyOnKeyDown(): code=%d", code);
 
-    // This is a hack to take back control of backspace key.
-    if (code == 8) {
+    // This is a hack to take back control of backspace and space keys.
+    if (code == 8 || code == 32) {
         petkeyOnKeyPress(event);
         return false;
     }

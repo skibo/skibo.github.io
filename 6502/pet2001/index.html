@@ -4,7 +4,7 @@
 <title>Commodore PET</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <style type='text/css'>
-     .hints1 {
+     .hints {
         margin-left: 20%;
         margin-right: 20%;
         padding: 2%;
@@ -31,9 +31,9 @@
 <body>
 <center>
 <h1>Commodore PET</h1>
-<input type='button' value='Hints' onClick='javascript:onHints()'><p>
+<input type='button' value='Hints' onClick='javascript:onHints("hints1")'><p>
 </center>
-<div class="hints1" id='hints' hidden>
+<div class='hints' id='hints1' hidden>
 The keyboard graphic responds to mouse clicks, touch events, and key presses.
 Hold your shift key while clicking the PET keyboard to get the graphics
 characters.
@@ -54,11 +54,11 @@ There is a large collection of .prg programs
 Some programs don't run on ROM1 and some require
 more memory than the default 8K.<p>
 April, 2014<p>
-<input type='button' value='Hide' onClick='javascript:onHints()'>
+<input type='button' value='Hide' onClick='javascript:onHints("hints1")'>
 </div>
 <script type="text/javascript">
-function onHints() {
-   var e = document.getElementById('hints');
+function onHints(id) {
+   var e = document.getElementById(id);
    e.hidden = !e.hidden;
 }
 </script>
@@ -99,8 +99,23 @@ Norbert Landsteiner has made many additions and enhancements to this PET
 emulator.  His emulator can be found
 <a href="http://www.masswerk.at/pet/">here</a>.
 <p>
-Checkers2 copyright (C) 2023 by Thomas Skibo.
-</center>
+  Checkers2 copyright (C) 2023 by Thomas Skibo.
+<input type='button' value='About' onClick='javascript:onHints("hints2")'><p>
+  </center>
+<div class='hints' id='hints2' hidden>
+Sometime in late 1979 or early 1980, I wrote a BASIC program to play
+checkers on the Commodore PET.  I submitted it to Cursor Magazine and
+they published it in Cursor #20 in May, 1980.  It is super slow and
+really unplayable except on a speeded up emulator.<p>
+Fast forward 40+ years and I decided to rewrite the game in 6502
+assembly language and now it is fast enough to be quite playable.
+Hit the "Play Checkers" button above to automatically load and play.<p>
+If you want a copy of the program, you can load it into the emulator
+with 'LOAD "*",8' (it is the default program) and then do a
+'SAVE "CHECKERS2",8' and your browser will prompt you to save the
+file to your local disk.<p>
+<input type='button' value='Hide' onClick='javascript:onHints("hints2")'>
+</div>
 <p>
 <a href="mailto:info7533@skibo.net">E-mail Me</a><br>
 <script type="text/javascript" src="js/pet2001main.js"></script>
