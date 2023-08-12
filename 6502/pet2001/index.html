@@ -22,7 +22,6 @@
 <script type="text/javascript" src="js/petkeys.js"></script>
 <script type="text/javascript" src="js/pet2001roms.js"></script>
 <script type="text/javascript" src="js/pet2001hw.js"></script>
-<script type="text/javascript" src="js/checkers2.js"></script>
 <script type="text/javascript" src="js/pet2001ieee.js"></script>
 <script type="text/javascript" src="js/pet2001io.js"></script>
 <script type="text/javascript" src="js/pet2001video.js"></script>
@@ -82,8 +81,6 @@ function onHints(id) {
    </select>
    Load Program:
    <input type='file' id='loadfile' onchange='javascript:loadFile()'>
-   <input type='button' onClick='javascript:checkersButton()'
-	  id='checkersbutton' value='Play Checkers'>
 </div>
 <p>
 <img src="keyboard_800x267.png" id='petkey'
@@ -98,25 +95,6 @@ and found on Wikipedia
 Norbert Landsteiner has made many additions and enhancements to this PET
 emulator.  His emulator can be found
 <a href="http://www.masswerk.at/pet/">here</a>.
-<p>
-  Checkers2 copyright (C) 2023 by Thomas Skibo.
-<input type='button' value='About' onClick='javascript:onHints("hints2")'><p>
-  </center>
-<div class='hints' id='hints2' hidden>
-  <h2>Checkers 2.0</h2>
-Sometime in late 1979 or early 1980, I wrote a BASIC program to play
-checkers on the Commodore PET.  I submitted it to Cursor Magazine and
-they published it in Cursor #20 in May, 1980.  It is super slow and
-really unplayable unless sped up in an emulator.<p>
-Now, 40+ years later, I am rewriting the game in 6502
-assembly language so that it is reasonably fast enough to be playable.<p>
-Press the "Play Checkers" button above to automatically load and play.
-Enter "HELP" at the prompt to get a brief description
-of how to enter moves.<p>
-Download the prg file <a href="checkers2.prg">here</a>.<p>
-June, 2023<p>
-<input type='button' value='Hide' onClick='javascript:onHints("hints2")'>
-</div>
 <p>
 <a href="mailto:info7533@skibo.net">E-mail Me</a><br>
 <script type="text/javascript" src="js/pet2001main.js"></script>

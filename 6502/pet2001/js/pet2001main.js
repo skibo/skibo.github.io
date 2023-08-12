@@ -101,11 +101,6 @@ function saveFile(filename, data) {
     document.body.removeChild(foo);
 }
 
-function checkersButton() {
-    pet2001.ieeeLoadData(checkers2);
-    petkeyQueueUp("load\"checkers2\",8\rrun\r");
-}
-
 function blankTimeoutFunc() {
     pet2001.blankTimeoutFunc();
 }

@@ -57,7 +57,8 @@ function PetIEEE(_hw) {
     var filename;
     var oldRom = false;
 
-    var load_data = checkers2;
+    var load_data = [ 0x01, 0x04, 0x0a, 0x04, 0x64, 0x00, 0x8f,
+                      0x20, 0x48, 0x49, 0x00, 0x00, 0x00 ];
 
     var data_index;
     var save_data;
@@ -296,8 +297,8 @@ function PetIEEE(_hw) {
     }
 
     this.checkTimeout = function() {
-	if (state == STATE_LOAD && senderTimeout && --senderTimeout == 0) {
-	    this.reset();
-	}
+        if (state == STATE_LOAD && senderTimeout && --senderTimeout == 0) {
+            this.reset();
+        }
     }
 }
