@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Test 6502</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style type='text/css'>
+     .hints1 {
+        margin-left: 20%;
+        margin-right: 20%;
+        padding: 2%;
+        background: #eeeeff;
+     }
+     .petvid {
+	margin: 2%;
+        padding: 1%;
+        background: #222266;
+        width: 640px;
+        height: 400px;
+     }
+</style>
+<script type="text/javascript" src="../js/cpu6502.js"></script>
+<script type="text/javascript" src="klaustests.js"></script>
+<script type="text/javascript" src="runtests.js"></script>
+</head>
+<body>
+  <h1>Test 6502</h1>
+  This page runs Klaus Dormann's 6502 tests on Javascript 6502 model.
+  See https://github.com/Klaus2m5/6502_65C02_functional_tests
+  Results of tests show up in the Javascript console.
+</body>
+<script type="text/javascript">
+  var test = new Run6502Tests();
+  test.go();
+</script>
+</html>
