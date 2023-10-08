@@ -161,46 +161,56 @@ function Cpu6502(hwobj) {
     function adc_instr(d8) {
         var result;
 
+        result = a + d8 + ((p & P_C) ? 1 : 0);
+
         if ((p & P_D) != 0) {
             // Decimal mode.  Gack!
+            set_flag(P_Z, (result & 0xff) == 0);
+
             result = (a & 0x0f) + (d8 & 0x0f) + ((p & P_C) ? 1 : 0);
-            if (result > 0x09)
+            if (result > 0x19)
+                result -= 0x0a;
+            else if (result > 0x09)
                 result += 0x06;
             result += (a & 0xf0) + (d8 & 0xf0);
+            set_flag(P_N, (result & 0x80) != 0);
+            set_flag(P_V, ((d8 ^ a) & 0x80) == 0 &&
+                     ((result ^ a) & 0x80) != 0);
             if ((result & 0xfff0) > 0x90)
                 result += 0x60;
+        } else {
+            set_nz(result & 0xff);
+            set_flag(P_V, ((d8 ^ a) & 0x80) == 0 &&
+                     ((result ^ a) & 0x80) != 0);
         }
-        else
-            result = a + d8 + ((p & P_C) ? 1 : 0);
 
         set_flag(P_C, result & 0xff00);
-        set_flag(P_V, ((d8 ^ a) & 0x80) == 0 &&
-                 ((result ^ a) & 0x80) != 0);
 
         a = result & 0xff;
-        set_nz(a);
     }
 
     function sbc_instr(d8) {
         var result;
+
+        result = a - d8 - ((p & P_C) ? 0 : 1);
+        set_flag(P_V, ((d8 ^ a) & 0x80) != 0 &&
+                 ((result ^ a) & 0x80) != 0);
+        set_nz(result & 0xff);
+
         if ((p & P_D) != 0) {
-            /* Decimal mode.  Gack! */
+            // Decimal mode.  Gack!
             result = (a & 0x0f) - (d8 & 0x0f) - ((p & P_C) ? 0 : 1);
-            if ((result & 0x10) != 0)
+            if ((result & 0x1f) >= 0x16)
                 result -= 0x06;
+            else if ((result & 0x10) != 0)
+                result += 0x0a;
             result += (a & 0xf0) - (d8 & 0xf0);
             if ((result & 0x100) != 0)
                 result -= 0x60;
         }
-        else
-            result = a - d8 - ((p & P_C) ? 0 : 1);
 
         set_flag(P_C, (result & 0xff00) == 0);
-        set_flag(P_V, ((d8 ^ a) & 0x80) != 0 &&
-                 ((result ^ a) & 0x80) != 0);
-
         a = result & 0xff;
-        set_nz(a);
     }
 
     function cmp_instr(left, right) {
