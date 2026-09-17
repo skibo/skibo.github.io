@@ -196,7 +196,7 @@ function petkeyKeypressTimeout() {
                         ascii_to_pet_row[code], false);
 
         petkeyKeypressTimeoutHandle =
-            setTimeout("petkeyKeypressTimeout()", petkeyKeypressTimeoutTime);
+            setTimeout(function () { petkeyKeypressTimeout(); }, petkeyKeypressTimeoutTime);
     }
     else
         petkeyKeypressTimeoutHandle = null;
@@ -220,7 +220,7 @@ function petkeyOnKeyPress(event) {
                         ascii_to_pet_row[code], false);
 
             petkeyKeypressTimeoutHandle =
-                setTimeout("petkeyKeypressTimeout()",
+                setTimeout(function () { petkeyKeypressTimeout(); },
                            petkeyKeypressTimeoutTime);
         }
         else {
@@ -259,7 +259,7 @@ function petkeyQueueUp(s) {
 
     if (petkeyKeypressTimeoutHandle == null) {
         petkeyKeypressTimeoutHandle =
-            setTimeout("petkeyKeypressTimeout()",
+            setTimeout(function () { petkeyKeypressTimeout(); },
                        petkeyKeypressTimeoutTime);
     }
 }

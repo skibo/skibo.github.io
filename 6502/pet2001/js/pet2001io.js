@@ -134,6 +134,7 @@ function PetIO(_hw, vid) {
     var via_t1_undf =   0;
     var via_t1ll =      0xff;
     var via_t1lh =      0xff;
+    var via_t2ll =      0xff;
     var via_t2cl =      0xff;
     var via_t2ch =      0xff;
     var via_t2_1shot =  0;
@@ -185,9 +186,10 @@ function PetIO(_hw, vid) {
         via_t1cl =      0xff;
         via_t1ch =      0xff;
         via_t1_1shot =  0;
-        var_t1_undf =   0;
+        via_t1_undf =   0;
         via_t1ll =      0xff;
         via_t1lh =      0xff;
+        via_t2ll =      0xff;
         via_t2cl =      0xff;
         via_t2ch =      0xff;
         via_t2_1shot =  0;
